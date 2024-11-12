@@ -1,3 +1,12 @@
+@font-face {
+  font-family: "배민한나는열한살체";
+  src: url("../BMHANNA_11yrs_ttf.ttf");
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+body {
+  font-family: "배민한나는열한살체";
+}
