@@ -1,16 +1,20 @@
 import WeightInputForm from "../components/weightinputform.jsx";
 import useInputFormStore from "../store.js";
+import CountryInputForm from "../components/countryinputform.jsx";
 import VolumeInputForm from "../components/volumeinputform.jsx";
 
 function LandingPage() {
-  const { isComparisonButtonClick, isNextVolume, moveQuestion } =
+  const { isComparisonButtonClick, isNextVolume, moveQuestion, isNextCountry } =
     useInputFormStore();
   return (
     <>
       <div className="justify-self-center mt-6 text-2xl">택배의 민족</div>
       {isComparisonButtonClick && <WeightInputForm />}
       {!isComparisonButtonClick && isNextVolume && <VolumeInputForm />}
-      {!isComparisonButtonClick && !isNextVolume && (
+      {!isComparisonButtonClick && !isNextVolume && isNextCountry && (
+        <CountryInputForm />
+      )}
+      {!isComparisonButtonClick && !isNextVolume && !isNextCountry && (
         <>
           <div className="mt-10 justify-items-center">
             <div className="mt-20 text-3xl">가장 빠르고</div>
