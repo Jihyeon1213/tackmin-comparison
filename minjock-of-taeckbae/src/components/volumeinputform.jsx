@@ -2,7 +2,8 @@ import { useState } from "react";
 import useInputFormStore from "../store";
 function VolumeInputForm() {
   const [inputVolume, setInputVolume] = useState("");
-  const { handleGoWeightInputClick } = useInputFormStore();
+  const { handleGoWeightInputClick, handleGoCountryInputClick } =
+    useInputFormStore();
   function handleInputVolumeChange(e) {
     setInputVolume(e.target.value);
   }
@@ -42,7 +43,10 @@ function VolumeInputForm() {
         >
           👈 이전
         </button>
-        <button className=" bg-black text-white text-2xl p-2 w-28 rounded hover:bg-blue-600">
+        <button
+          onClick={handleGoCountryInputClick}
+          className=" bg-black text-white text-2xl p-2 w-28 rounded hover:bg-blue-600"
+        >
           다음 👉
         </button>
       </div>

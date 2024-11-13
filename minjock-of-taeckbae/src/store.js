@@ -7,6 +7,8 @@ export const useInputFormStore = create((set) => ({
   isNextVolume: false,
   handleNextToVolumeClick: () => set({ isNextVolume: true, isComparisonButtonClick: false }),
   handleGoWeightInputClick: () => set({ isNextVolume: false, isComparisonButtonClick: true }),
+  handleGoCountryInputClick: () => set({ isNextCountry: true, isNextVolume: false }),
+  handleGoVolumeInputClick: () => set({ isNextCountry: false, isNextVolume: true }),
   weight: "",
   handleWeightInputChange: (e) => set({ weight: e.target.value }),
   volumeWeight: "",
