@@ -1,4 +1,5 @@
 import useInputFormStore from "../store";
+import WeightAlertModal from "./weightAlertModal";
 
 function WeightInputForm() {
   const {
@@ -6,6 +7,7 @@ function WeightInputForm() {
     handleWeightInputChange,
     handleNextToVolumeClick,
     handleGoLandingPageClick,
+    isWeightAlertModalOpen,
   } = useInputFormStore();
 
   return (
@@ -23,6 +25,7 @@ function WeightInputForm() {
           <span className="text-3xl">Kg</span>
         </div>
       </div>
+      {isWeightAlertModalOpen && <WeightAlertModal />}
       <div className="flex justify-between mx-8 mt-28 mb-16">
         <button
           onClick={handleGoLandingPageClick}
@@ -32,6 +35,7 @@ function WeightInputForm() {
         </button>
         <button
           onClick={handleNextToVolumeClick}
+          value={weight}
           className=" bg-black text-white text-2xl p-2 w-28 rounded hover:bg-blue-600"
         >
           다음 👉

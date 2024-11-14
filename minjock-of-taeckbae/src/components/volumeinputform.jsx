@@ -1,22 +1,18 @@
 import { useState } from "react";
 import useInputFormStore from "../store";
+import VolumeAlertModal from "./volumeAlertModal";
 function VolumeInputForm() {
   const [inputVolume, setInputVolume] = useState("");
-  const { handleGoWeightInputClick, handleGoCountryInputClick } =
-    useInputFormStore();
+  const {
+    handleGoWeightInputClick,
+    handleGoCountryInputClick,
+    isVolumeAlertModalOpen,
+  } = useInputFormStore();
+
   function handleInputVolumeChange(e) {
     setInputVolume(e.target.value);
   }
 
-  function handleKeyDown(e) {
-    let volumeInputValueArray = inputVolume.split("");
-    let xCount =
-      volumeInputValueArray.filter((element) => "x" === element).length + 1;
-
-    if (e.key === "Enter" && xCount <= 2) {
-      setInputVolume(e.target.value + "x");
-    }
-  }
   return (
     <>
       <div className="justify-items-center">
@@ -27,7 +23,6 @@ function VolumeInputForm() {
             value={inputVolume}
             placeholder="10x30x40"
             onChange={(e) => handleInputVolumeChange(e)}
-            onKeyDown={handleKeyDown}
             className="text-3xl w-40 focus:outline-none border-b-8"
           ></input>
           <span className="text-3xl">Cm</span>
@@ -36,6 +31,7 @@ function VolumeInputForm() {
           *가로x세로x높이 순서대로 입력해주세요
         </div>
       </div>
+      {isVolumeAlertModalOpen && <VolumeAlertModal />}
       <div className="flex justify-between mx-8 mt-24 mb-16">
         <button
           onClick={handleGoWeightInputClick}
@@ -45,6 +41,7 @@ function VolumeInputForm() {
         </button>
         <button
           onClick={handleGoCountryInputClick}
+          value={inputVolume}
           className=" bg-black text-white text-2xl p-2 w-28 rounded hover:bg-blue-600"
         >
           다음 👉

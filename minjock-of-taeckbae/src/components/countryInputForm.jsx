@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import countryList from "../countrylist";
 import useInputFormStore from "../store";
 import Select from "react-select";
@@ -5,6 +6,11 @@ import Select from "react-select";
 function CountryInputForm() {
   const { handleGoVolumeInputClick, handleSelectedCountryChange } =
     useInputFormStore();
+  const navigate = useNavigate();
+
+  function handleMoveServiceListPage() {
+    navigate("/comparison");
+  }
 
   return (
     <>
@@ -30,7 +36,10 @@ function CountryInputForm() {
         >
           👈 이전
         </button>
-        <button className=" bg-black text-white text-2xl p-2 w-28 rounded hover:bg-blue-600">
+        <button
+          onClick={handleMoveServiceListPage}
+          className=" bg-black text-white text-2xl p-2 w-28 rounded hover:bg-blue-600"
+        >
           다음 👉
         </button>
       </div>
