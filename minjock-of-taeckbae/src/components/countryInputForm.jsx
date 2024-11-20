@@ -1,24 +1,24 @@
-import { useNavigate } from "react-router-dom";
 import countryList from "../countrylist";
 import useInputFormStore from "../store";
 import Select from "react-select";
 
 function CountryInputForm() {
-  const { handleGoVolumeInputClick, handleSelectedCountryChange } =
-    useInputFormStore();
-  const navigate = useNavigate();
-
-  function handleMoveServiceListPage() {
-    navigate("/comparison");
-  }
+  const {
+    handleSelectedCountryChange,
+    handleGoWeightInputClick,
+    handleGoLandingPageClick,
+  } = useInputFormStore();
 
   return (
     <>
-      <div className="justify-items-center">
-        <div className="mt-28 text-3xl">
-          마지막으로 <br />
-          도착국가를 알려주세요.
+      <div className="flex mt-8 items-center">
+        <div className="mt-6 text-6xl ml-32">
+          택배<span className="text-5xl">의</span>민족
         </div>
+        <img src="/src/taeckmin.png" className="w-24" />
+      </div>
+      <div className="justify-items-center">
+        <div className="mt-28 text-3xl">도착국가를 입력해주세요.</div>
         <div className="mt-10">
           <Select
             options={countryList}
@@ -31,13 +31,13 @@ function CountryInputForm() {
       </div>
       <div className="flex justify-between mx-8 mt-24 mb-16">
         <button
-          onClick={handleGoVolumeInputClick}
+          onClick={handleGoLandingPageClick}
           className=" bg-black text-white text-2xl p-2 w-28 rounded hover:bg-blue-600"
         >
-          👈 이전
+          메인으로
         </button>
         <button
-          onClick={handleMoveServiceListPage}
+          onClick={handleGoWeightInputClick}
           className=" bg-black text-white text-2xl p-2 w-28 rounded hover:bg-blue-600"
         >
           다음 👉

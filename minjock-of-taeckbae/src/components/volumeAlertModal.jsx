@@ -4,20 +4,29 @@ function VolumeAlertModal() {
   const { handlemodalCloseClick } = useInputFormStore();
   return (
     <>
-      <div className="fixed inset-0 h-full w-full cursor-default justify-items-center bg-black bg-opacity-50">
-        <div className="border-3 w-56 h-36 bg-white rounded mt-60">
-          <div className="flex justify-end">
+      <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+        <div className="bg-white rounded-lg shadow-lg p-6 w-80 sm:w-96">
+          <div className="flex justify-between items-center border-b pb-2">
+            <h2 className="text-xl font-bold text-gray-800">알림</h2>
             <button
               onClick={handlemodalCloseClick}
-              className="bg-black text-white text-sm w-12 p-1 rounded hover:bg-blue-600"
+              className="text-gray-500 hover:text-gray-800 focus:outline-none"
+            >
+              ✖
+            </button>
+          </div>
+          <div className="mt-4 text-center text-gray-700">
+            부피를 초과하였습니다.
+            <br />
+            가로 150cm 이하, 둘레 300cm 이하로 입력해주세요.
+          </div>
+          <div className="flex justify-center mt-6">
+            <button
+              onClick={handlemodalCloseClick}
+              className="bg-blue-600 text-white text-sm font-semibold px-4 py-2 rounded-lg hover:bg-blue-700 transition duration-300"
             >
               닫기
             </button>
-          </div>
-          <div className="justify-self-center text-1xl mt-6 text-gray-600">
-            가로x세로x높이 <br />
-            또는 가로,세로,높이 <br />
-            형식으로 입력해주세요.
           </div>
         </div>
       </div>
