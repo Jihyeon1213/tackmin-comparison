@@ -47,6 +47,7 @@ function ServiceComparison() {
           setEmsRate(formattedRate);
         })
         .catch((error) => console.log(error));
+
       axios
         .post("http://127.0.0.1:5001/scrape_ups", {
           countryCode: selectedCountry,
@@ -67,7 +68,6 @@ function ServiceComparison() {
         .post("http://127.0.0.1:5000/scrape", {
           countryCode: selectedCountry,
           weight: realWeight.dhl,
-          carrierCode: "DHL",
         })
         .then((response) => {
           setDhlRate(response.data["DHL"]);
@@ -80,7 +80,6 @@ function ServiceComparison() {
         .post("http://127.0.0.1:5000/scrape", {
           countryCode: selectedCountry,
           weight: realWeight.sf,
-          carrierCode: "SF",
         })
         .then((response) => {
           setSfRate(response.data["SF"]);
