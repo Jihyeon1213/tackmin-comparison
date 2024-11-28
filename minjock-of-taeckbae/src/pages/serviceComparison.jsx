@@ -57,7 +57,7 @@ function ServiceComparison() {
           height: height,
         })
         .then((response) => {
-          const modifiedData = response.data.slice(0, -1);
+          const modifiedData = response.data.slice(0, 7);
           setUpsRate(modifiedData);
         })
         .catch((error) => {

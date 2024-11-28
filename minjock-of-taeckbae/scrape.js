@@ -115,7 +115,7 @@ app.post("/scrape", jsonParser, async function scrapeDhlSf(req, res) {
   const { countryCode, weight } = req.body
   const fixedWeight = weight.toFixed(1);
   const browser = await chromium.launch({
-    headless: false
+    headless: true
   });
   const context = await browser.newContext();
 
