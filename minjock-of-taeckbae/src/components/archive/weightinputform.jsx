@@ -1,5 +1,6 @@
-import useInputFormStore from "../store";
-import WeightAlertModal from "./weightAlertModal";
+import useInputFormStore from "../../store";
+import WeightAlertModal from "../weightAlertModal";
+import WeightOverModal from "../weightOverModal";
 
 function WeightInputForm() {
   const {
@@ -8,10 +9,17 @@ function WeightInputForm() {
     handleNextToVolumeClick,
     handleGoLandingPageClick,
     isWeightAlertModalOpen,
+    isWeightover,
   } = useInputFormStore();
 
   return (
     <>
+      <div className="flex ml-10 mt-8 items-center">
+        <div className="mt-6 text-6xl ml-28">
+          택배<span className="text-5xl">의</span>민족
+        </div>
+        <img src="/src/taeckmin.png" className="w-24" />
+      </div>
       <div className="justify-items-center">
         <div className=" mt-32 text-3xl">택배의 무게를 알려주세요.</div>
         <div className="mt-12">
@@ -26,6 +34,7 @@ function WeightInputForm() {
         </div>
       </div>
       {isWeightAlertModalOpen && <WeightAlertModal />}
+      {isWeightover && <WeightOverModal />}
       <div className="flex justify-between mx-8 mt-28 mb-16">
         <button
           onClick={handleGoLandingPageClick}
