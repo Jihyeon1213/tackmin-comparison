@@ -21,6 +21,22 @@ function ServiceComparison() {
     handleGoWeightInputClick,
   } = useInputFormStore();
 
+  const dhlSfSupportedCountries = {
+    US: true,
+    JP: true,
+    CN: true,
+    HK: true,
+    TW: true,
+    VN: true,
+    TH: true,
+    SG: true,
+    MY: true,
+    ID: true,
+    PH: true,
+    IN: true,
+    AU: true,
+  };
+
   useEffect(() => {
     let emsWeight = Math.max(weight, firstVolumeWeight);
     let sfWeight = Math.max(weight, secondVolumeWeight);
@@ -34,63 +50,81 @@ function ServiceComparison() {
       ups: upsWeight,
     });
   }, [weight, firstVolumeWeight, secondVolumeWeight]);
-
   useEffect(() => {
     if (realWeight && selectedCountry) {
       setIsLoading(true);
-      axios
-        .get("/src/emsrate.json")
-        .then((response) => {
-          const rate = response.data[realWeight.ems][selectedCountry];
-          const formattedRate = rate.toLocaleString();
 
-          setEmsRate(formattedRate);
-        })
-        .catch((error) => console.log(error));
+      const requests = [
+        axios.get("/src/emsrate.json"),
+        axios.post(
+          "http://127.0.0.1:5002/scrape_ups",
+          {
+            countryCode: selectedCountry,
+            weight: weight,
+            width: width,
+            length: length,
+            height: height,
+          },
+          { withCredentials: false }
+        ),
+      ];
 
-      axios
-        .post("http://127.0.0.1:5001/scrape_ups", {
-          countryCode: selectedCountry,
-          weight: weight,
-          width: width,
-          length: length,
-          height: height,
-        })
-        .then((response) => {
-          const modifiedData = response.data.slice(0, 7);
-          setUpsRate(modifiedData);
+      if (dhlSfSupportedCountries[selectedCountry]) {
+        requests.push(
+          axios.post(
+            "http://127.0.0.1:5000/scrape",
+            {
+              countryCode: selectedCountry,
+              weight: realWeight.dhl,
+            },
+            { withCredentials: false }
+          ),
+          axios.post(
+            "http://127.0.0.1:5000/scrape",
+            {
+              countryCode: selectedCountry,
+              weight: realWeight.sf,
+            },
+            { withCredentials: false }
+          )
+        );
+      }
+
+      Promise.all(requests)
+        .then((responses) => {
+          try {
+            if (!responses[0].data) throw new Error("EMS 데이터 없음");
+            if (!responses[1].data) throw new Error("UPS 데이터 없음");
+
+            setEmsRate(
+              responses[0].data[realWeight.ems][
+                selectedCountry
+              ].toLocaleString()
+            );
+            setUpsRate(responses[1].data.slice(0, 7));
+
+            if (dhlSfSupportedCountries[selectedCountry]) {
+              if (!responses[2].data) throw new Error("DHL 데이터 없음");
+              if (!responses[3].data) throw new Error("SF 데이터 없음");
+
+              setDhlRate(responses[2].data["DHL"]);
+              setSfRate(responses[3].data["SF"]);
+            } else {
+              setDhlRate(null);
+              setSfRate(null);
+            }
+          } catch (error) {
+            console.error("데이터 처리 중 오류:", error);
+          }
         })
         .catch((error) => {
-          console.error(error);
-        });
-
-      axios
-        .post("http://127.0.0.1:5000/scrape", {
-          countryCode: selectedCountry,
-          weight: realWeight.dhl,
+          console.error("API 요청 중 오류:", error);
         })
-        .then((response) => {
-          setDhlRate(response.data["DHL"]);
-        })
-        .catch((error) => {
-          console.error(error);
-        });
-
-      axios
-        .post("http://127.0.0.1:5000/scrape", {
-          countryCode: selectedCountry,
-          weight: realWeight.sf,
-        })
-        .then((response) => {
-          setSfRate(response.data["SF"]);
-          setIsLoading(false);
-        })
-        .catch((error) => {
-          console.error(error);
+        .finally(() => {
           setIsLoading(false);
         });
     }
-  }, [realWeight]);
+  }, [realWeight, selectedCountry]);
 
   function Checkcheeprate() {
     let rateList = [UpsRate, emsRate, SfRate, dhlRate];
@@ -252,7 +286,15 @@ function ServiceComparison() {
       volumeInfo: match().forthVolumeInfo,
       volumeValue: match().forthVolumeValue,
     },
-  ];
+  ].filter((card) => {
+    if (
+      (card.image.includes("dhl") || card.image.includes("sf")) &&
+      (card.rate === "" || card.rate === null || card.rate === undefined)
+    ) {
+      return false;
+    }
+    return true;
+  });
 
   if (isLoading) {
     return (
