@@ -9,6 +9,7 @@ function ServiceComparison() {
   const [dhlRate, setDhlRate] = useState(0);
   const [realWeight, setRealWeight] = useState("");
   const [isLoading, setIsLoading] = useState(true);
+  const [isInfoVisible, setIsInfoVisible] = useState(false);
   const {
     weight,
     selectedCountry,
@@ -296,69 +297,79 @@ function ServiceComparison() {
     return true;
   });
 
+  const toggleInfoVisibility = () => {
+    setIsInfoVisible(!isInfoVisible);
+  };
+
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center h-screen">
-        <p>로딩 중입니다...</p>
+      <div className="relative text-gray-800 w-96 h-[80vh] sm:w-[28rem] md:w-[36rem] lg:w-[42rem] p-8 rounded-lg shadow-2xl flex flex-col items-center justify-center">
+        <div className="loader mb-4"></div>
+        <p className="text-xl font-semibold">로딩 중입니다...</p>
       </div>
     );
   }
 
   return (
     <>
-      <div className="flex items-center justify-center text-2xl mt-3">
-        택배<span className="text-xl">의</span> 민족
-        <img
-          className="w-12 ml-2"
-          src="/src/taeckmin.png"
-          alt="택배 민족 로고"
-        />
-      </div>
-      <div className="ml-3 mt-3 justify-self-center">
-        국가: {selectedCountry}
-        <br /> 무게: {weight}kg
-        <br />
-        가로:{width}, 세로: {length}, 높이: {height}
-      </div>
-      <div className="border-2 p-4 h-128 overflow-y-auto mt-8">
-        {cardArray
-          .filter((info) => info.rate !== 0 && info.rate !== "0")
-          .map((info, index) => {
-            return (
-              <div
-                className="shadow-md border-2 rounded-lg w-4/5 h-32 justify-self-center p-2 grid grid-cols-3 gap-4 mt-8, mb-4"
-                key={index}
-              >
-                <div className="col-start-1 col-end-3 ">
-                  국가: {selectedCountry}
-                  <br />
-                  요금: {info.rate} 원
-                  <br />
-                  적용 무게: {info.weight}kg
-                  <br />
-                  부피중량 : {info.volumeValue}kg
-                  <p className="text-gray-500 text-xs">{info.volumeInfo}</p>
-                </div>
-                <div className="col-end-7 col-span-2 flex justify-end items-center">
-                  <img src={info.image} className="w-28 mb-3" />
-                </div>
-              </div>
-            );
-          })}
-      </div>
-      <div className="flex justify-between mx-8 mt-5 mb-5">
-        <button
-          onClick={handleGoLandingPageClick}
-          className=" bg-black text-white text-1xl p-2 w-28 rounded hover:bg-blue-600"
-        >
-          메인으로
-        </button>
+      <div className="relative text-gray-800 w-96 h-[80vh] sm:w-[28rem] md:w-[36rem] lg:w-[42rem] p-8 rounded-lg shadow-2xl flex flex-col items-center justify-center">
         <button
           onClick={handleGoWeightInputClick}
-          className=" bg-black text-white text-1xl p-2 w-28 rounded hover:bg-blue-600"
+          className="absolute top-2 left-2 bg-gray-800 text-white text-sm p-1 rounded hover:bg-blue-600 flex items-center"
         >
-          무게, 부피 수정
+          무게 부피 수정
         </button>
+        <div className="absolute top-10 left-1 p-1 ">
+          <button
+            onClick={toggleInfoVisibility}
+            className="bg-gray-800 text-white text-sm p-1 rounded hover:bg-blue-600 flex items-center mb-2"
+          >
+            입력 정보
+          </button>
+          {isInfoVisible && (
+            <div>
+              <p>국가: {selectedCountry}</p>
+              <p>무게: {weight}kg</p>
+              <p>가로: {width}</p>
+              <p>세로: {length}</p>
+              <p>높이: {height}</p>
+            </div>
+          )}
+        </div>
+        <div className="container flex flex-col items-center mt-8">
+          <div className="flex items-center">
+            <div
+              className="text-6xl hover:text-blue-600 cursor-pointer"
+              onClick={handleGoLandingPageClick}
+            >
+              택배<span className="text-5xl">의</span> 민족
+            </div>
+          </div>
+          <div className="border-2 p-4 h-128 overflow-y-auto mt-8 w-[500px] scrollbar-hide">
+            <div className="grid grid-cols-1 gap-4">
+              {cardArray
+                .filter((info) => info.rate !== 0 && info.rate !== "0")
+                .map((info, index) => (
+                  <div
+                    className="shadow-md border-2 rounded-lg p-4 grid grid-cols-3 gap-4"
+                    key={index}
+                  >
+                    <div className="col-span-2">
+                      요금: {info.rate} 원
+                      <br />
+                      적용 무게: {info.weight}kg
+                      <br />
+                      부피중량 : {info.volumeValue}kg
+                      <p className="text-gray-500 text-xs">{info.volumeInfo}</p>
+                    </div>
+                    <div className="flex justify-end items-center">
+                      <img src={info.image} className="w-28" />
+                    </div>
+                  </div>
+                ))}
+            </div>
+          </div>
+        </div>
       </div>
     </>
   );
