@@ -23,32 +23,24 @@ function LandingPage() {
       )}
       {!isNextWeightAndVolume && !isNextCountry && landingPage && (
         <>
-          <div className="relative w-full flex justify-center items-center mb-8">
-            <div className="text-6xl font-bold text-center space-x-2">
-              <span className="text-blue-500">택배</span>
-              <span className="text-5xl">의</span>
-              <span className="text-yellow-400">민족</span>
-            </div>
-            <img
-              src="/src/taeckmin.png"
-              className="absolute right-0 w-16 h-16"
-              alt="택배의 민족 캐릭터"
-            />
-          </div>
-          <div className="text-center space-y-10">
-            <div className="text-4xl font-semibold">가장 빠르고</div>
-            <div className="text-4xl font-semibold">저렴한 가격의</div>
-            <div className="text-6xl lg:text-6xl text-blue-400 font-bold">
-              국제 택배
-            </div>
-            <div className="text-4xl font-light mt-4">지금 찾아드릴게요</div>
-            <div className="mt-16">
-              <button
-                onClick={handlegoCountryInputClick}
-                className=" bg-blue-600 text-white text-3xl p-4 rounded-lg hover:bg-yellow-500 transition-transform duration-300 ease-in-out transform hover:scale-105"
-              >
-                한 번에 비교하기
-              </button>
+          <div className=" w-96 h-[80vh] sm:w-[28rem] md:w-[36rem] lg:w-[42rem] p-8 rounded-lg shadow-2xl flex flex-col items-center justify-center">
+            <div className="container flex flex-col items-center mt-8">
+              <div className="flex items-center">
+                <div className="text-6xl mb-20">
+                  택배<span className="text-5xl">의</span> 민족
+                </div>
+              </div>
+              <div className="mt-8 animate-slideInFromRight">
+                <img src="/taeckmin.png" alt="택민이이미지" className="w-64" />
+              </div>
+              <div className="mt-20">
+                <button
+                  onClick={handlegoCountryInputClick}
+                  className=" bg-blue-600 text-white text-3xl p-4 rounded-lg hover:bg-blue-700 transition-transform duration-300 ease-in-out transform hover:scale-105"
+                >
+                  가격 비교하기
+                </button>
+              </div>
             </div>
           </div>
         </>
