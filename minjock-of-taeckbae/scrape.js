@@ -37,7 +37,6 @@ app.post("/scrape", jsonParser, async function scrapeDhlSf(req, res) {
       res.send({ DHL: "0", SF: "0" });
       return;
     }
-
     browser = await chromium.launch({
       headless: true
     });
@@ -50,6 +49,8 @@ app.post("/scrape", jsonParser, async function scrapeDhlSf(req, res) {
         waitUntil: 'networkidle'
       });
 
+      await page.waitForTimeout(2000);
+
       await page.waitForSelector('#selectType:not([disabled])');
       await page.waitForSelector('#selectNation:not([disabled])');
 
@@ -57,6 +58,8 @@ app.post("/scrape", jsonParser, async function scrapeDhlSf(req, res) {
       await page.selectOption("#selectNation", countryName[countryCode]);
       await page.selectOption("#selectGubun", "비서류");
       await page.selectOption("#selectWeight", fixedWeight);
+
+      await page.waitForTimeout(2000);
 
       await page.waitForSelector("#spanPrice");
       rates[carrier] = await page.$eval("#spanPrice", (el) => el.textContent);
