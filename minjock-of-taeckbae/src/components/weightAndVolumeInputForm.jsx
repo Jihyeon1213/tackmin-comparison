@@ -18,84 +18,101 @@ function WeightAndVolumeInputForm() {
     handleWidthChange,
     handleLengthChange,
     handleHeightChange,
+    handleGoLandingPageClick,
   } = useInputFormStore();
 
   return (
     <>
-      <div className="flex flex-col items-center mt-8">
-        <div className="flex items-center">
-          <div className="text-3xl sm:text-4xl font-bold ml-6">
-            택배<span className="text-xl sm:text-2xl">의</span> 민족
+      <div className="relative text-gray-800 w-96 h-[80vh] sm:w-[28rem] md:w-[36rem] lg:w-[42rem] p-8 rounded-lg shadow-2xl flex flex-col items-center justify-center">
+        <button
+          onClick={handlegoCountryInputClick}
+          className="absolute top-2 left-2 bg-gray-800 text-white text-sm p-1 rounded hover:bg-blue-600 flex items-center"
+        >
+          국가 수정하기
+        </button>
+        <div className="container flex flex-col items-center mt-8 w-full">
+          <div className="flex items-center">
+            <div
+              className="text-6xl hover:text-blue-600 cursor-pointer"
+              onClick={handleGoLandingPageClick}
+            >
+              택배<span className="text-5xl">의</span> 민족
+            </div>
           </div>
-          <img src="/src/taeckmin.png" className="w-16 sm:w-24 ml-4" />
-        </div>
-        <div className="mt-8 text-center">
-          <div className="text-xl">택배의 무게와 부피를 알려주세요.</div>
-          <div className="mt-4">
-            <input
-              type="text"
-              value={weight}
-              placeholder="10"
-              onChange={handleWeightInputChange}
-              className="text-2xl sm:text-3xl w-20 sm:w-24 text-center border-b-4 focus:outline-none"
-            />
-            <span className="text-xl sm:text-3xl ml-2">Kg</span>
+          <div className="mt-8 text-center">
+            <div className="text-2xl">택배의 무게와 부피를 알려주세요.</div>
+            <div className="mt-12">
+              <input
+                type="text"
+                value={weight}
+                placeholder="10"
+                onChange={handleWeightInputChange}
+                className="text-4xl w-24 text-center border-b-8 focus:outline-none"
+              />
+              <span className="text-3xl ml-2">Kg</span>
+            </div>
           </div>
-        </div>
-        {isWeightAlertModalOpen && <WeightAlertModal />}
-        {isWeightover && <WeightOverModal />}
-        <div className="mt-12 text-center">
-          <div className="flex items-start justify-center mt-8">
-            <img src="/src/volume.png" alt="택배 박스" className="w-72" />
-            <div className="flex flex-col ml-8 space-y-4 mt-8">
-              <div className="flex items-center">
-                <label className="text-lg font-semibold mr-4">가로 (cm):</label>
-                <input
-                  type="text"
-                  placeholder="가로"
-                  onChange={handleWidthChange}
-                  value={width}
-                  className="w-32 border-b-2 text-center focus:outline-none text-lg"
-                />
+          {isWeightAlertModalOpen && <WeightAlertModal />}
+          {isWeightover && <WeightOverModal />}
+          <div className="mt-6 text-center">
+            <div className="flex items-start justify-center ">
+              <div className="mt-12 animate-slideInfromLeft w-80">
+                <img src="/volume.png" alt="택배상자" />
               </div>
-              <div className="flex items-center">
-                <label className="text-lg font-semibold mr-4">세로 (cm):</label>
-                <input
-                  type="text"
-                  placeholder="세로"
-                  onChange={handleLengthChange}
-                  value={length}
-                  className="w-32 border-b-2 text-center focus:outline-none text-lg"
-                />
-              </div>
-              <div className="flex items-center">
-                <label className="text-lg font-semibold mr-4">높이 (cm):</label>
-                <input
-                  type="text"
-                  placeholder="높이"
-                  onChange={handleHeightChange}
-                  value={height}
-                  className="w-32 border-b-2 text-center focus:outline-none text-lg"
-                />
+              <div className="flex flex-col ml-8 space-y-4 mt-12">
+                <div className="flex items-center">
+                  <label className="text-lg font-semibold mr-4">
+                    가로 (cm):
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="가로"
+                    onChange={handleWidthChange}
+                    value={width}
+                    className="w-32 border-b-2 text-center focus:outline-none text-lg"
+                  />
+                </div>
+                <div className="flex items-center">
+                  <label className="text-lg font-semibold mr-4">
+                    세로 (cm):
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="세로"
+                    onChange={handleLengthChange}
+                    value={length}
+                    className="w-32 border-b-2 text-center focus:outline-none text-lg"
+                  />
+                </div>
+                <div className="flex items-center">
+                  <label className="text-lg font-semibold mr-4">
+                    높이 (cm):
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="높이"
+                    onChange={handleHeightChange}
+                    value={height}
+                    className="w-32 border-b-2 text-center focus:outline-none text-lg"
+                  />
+                </div>
               </div>
             </div>
           </div>
-        </div>
-        {isVolumeAlertModalOpen && <VolumeAlertModal />}
-        <div className="flex justify-between w-full max-w-md mt-12 mb-8 px-4">
-          <button
-            onClick={handlegoCountryInputClick}
-            className="bg-black text-white text-xl sm:text-2xl p-2 w-28 rounded hover:bg-blue-600"
+          {isVolumeAlertModalOpen && <VolumeAlertModal />}
+          <div
+            className={`mt-12 transition-opacity duration-1500 ${
+              weight && width && length && height ? "opacity-100" : "opacity-0"
+            }`}
           >
-            👈 이전
-          </button>
-          <button
-            onClick={handleGoComparisonClick}
-            value={`${weight}, ${width}, ${length}, ${height}`}
-            className="bg-black text-white text-xl sm:text-2xl p-2 w-28 rounded hover:bg-blue-600"
-          >
-            다음 👉
-          </button>
+            <button
+              onClick={handleGoComparisonClick}
+              value={`${weight}, ${width}, ${length}, ${height}`}
+              className="bg-blue-600 text-white text-3xl p-4 rounded-lg hover:bg-blue-700 transition-transform duration-300 ease-in-out transform hover:scale-105"
+            >
+              가격 비교하기
+            </button>
+          </div>
         </div>
       </div>
     </>
