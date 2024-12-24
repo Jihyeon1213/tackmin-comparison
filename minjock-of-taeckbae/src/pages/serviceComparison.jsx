@@ -160,22 +160,22 @@ function ServiceComparison() {
     for (let i = 0; i < rateList.length; i++) {
       if (Checkcheeprate()[0] === rateList[i]) {
         if (rateList[i] === emsRate) {
-          result.firstImage = "/src/emslogo.png";
+          result.firstImage = "/emslogo.png";
           result.firstVolumeInfo = "(가로x세로x높이) ➗ 6000";
           result.firstVolumeValue = firstVolumeWeight;
           result.firstWeight = realWeight.ems;
         } else if (rateList[i] === UpsRate) {
-          result.firstImage = "/src/upslogo.png";
+          result.firstImage = "/upslogo.png";
           result.firstVolumeInfo = "(가로x세로x높이) ➗ 6000";
           result.firstVolumeValue = firstVolumeWeight;
           result.firstWeight = realWeight.ups;
         } else if (rateList[i] === SfRate) {
-          result.firstImage = "/src/sflogo.png";
+          result.firstImage = "/sflogo.png";
           result.firstVolumeInfo = "(가로x세로x높이) ➗ 5000";
           result.firstWeight = realWeight.sf;
           result.firstVolumeValue = secondVolumeWeight;
         } else if (rateList[i] === dhlRate) {
-          result.firstImage = "/src/dhllogo.png";
+          result.firstImage = "/dhllogo.png";
           result.firstVolumeInfo = "(가로x세로x높이) ➗ 5000";
           result.firstVolumeValue = secondVolumeWeight;
           result.firstWeight = realWeight.dhl;
@@ -183,22 +183,22 @@ function ServiceComparison() {
       }
       if (Checkcheeprate()[1] === rateList[i]) {
         if (rateList[i] === emsRate) {
-          result.secondImage = "/src/emslogo.png";
+          result.secondImage = "/emslogo.png";
           result.secondVolumeInfo = "(가로x세로x높이) ➗ 6000";
           result.secondVolumeValue = firstVolumeWeight;
           result.secondWeight = realWeight.ems;
         } else if (rateList[i] === UpsRate) {
-          result.secondImage = "/src/upslogo.png";
+          result.secondImage = "/upslogo.png";
           result.secondVolumeInfo = "(가로x세로x높이) ➗ 6000";
           result.secondVolumeValue = firstVolumeWeight;
           result.secondWeight = realWeight.ups;
         } else if (rateList[i] === SfRate) {
-          result.secondImage = "/src/sflogo.png";
+          result.secondImage = "/sflogo.png";
           result.secondVolumeInfo = "(가로x세로x높이) ➗ 5000";
           result.secondVolumeValue = secondVolumeWeight;
           result.secondWeight = realWeight.sf;
         } else if (rateList[i] === dhlRate) {
-          result.secondImage = "/src/dhllogo.png";
+          result.secondImage = "/dhllogo.png";
           result.secondVolumeInfo = "(가로x세로x높이) ➗ 5000";
           result.secondVolumeValue = secondVolumeWeight;
           result.secondWeight = realWeight.dhl;
@@ -206,22 +206,22 @@ function ServiceComparison() {
       }
       if (Checkcheeprate()[2] === rateList[i]) {
         if (rateList[i] === emsRate) {
-          result.thirdImage = "/src/emslogo.png";
+          result.thirdImage = "/emslogo.png";
           result.thirdVolumeInfo = "(가로x세로x높이) ➗ 6000";
           result.thirdVolumeValue = firstVolumeWeight;
           result.thirdWeight = realWeight.ems;
         } else if (rateList[i] === UpsRate) {
-          result.thirdImage = "/src/upslogo.png";
+          result.thirdImage = "/upslogo.png";
           result.thirdVolumeInfo = "(가로x세로x높이) ➗ 6000";
           result.thirdVolumeValue = firstVolumeWeight;
           result.thirdWeight = realWeight.ups;
         } else if (rateList[i] === SfRate) {
-          result.thirdImage = "/src/sflogo.png";
+          result.thirdImage = "/sflogo.png";
           result.thirdVolumeInfo = "(가로x세로x높이) ➗ 5000";
           result.thirdVolumeValue = secondVolumeWeight;
           result.thirdWeight = realWeight.sf;
         } else if (rateList[i] === dhlRate) {
-          result.thirdImage = "/src/dhllogo.png";
+          result.thirdImage = "/dhllogo.png";
           result.thirdVolumeInfo = "(가로x세로x높이) ➗ 5000";
           result.thirdVolumeValue = secondVolumeWeight;
           result.thirdWeight = realWeight.dhl;
@@ -229,22 +229,22 @@ function ServiceComparison() {
       }
       if (Checkcheeprate()[3] === rateList[i]) {
         if (rateList[i] === emsRate) {
-          result.forthImage = "/src/emslogo.png";
+          result.forthImage = "/emslogo.png";
           result.forthVolumeInfo = "(가로x세로x높이) ➗ 6000";
           result.forthVolumeValue = firstVolumeWeight;
           result.forthWeight = realWeight.ems;
         } else if (rateList[i] === UpsRate) {
-          result.forthImage = "/src/upslogo.png";
+          result.forthImage = "/upslogo.png";
           result.forthVolumeValue = "(가로x세로x높이) ➗ 6000";
           result.forthVolumeValue = firstVolumeWeight;
           result.forthWeight = realWeight.ups;
         } else if (rateList[i] === SfRate) {
-          result.forthImage = "/src/sflogo.png";
+          result.forthImage = "/sflogo.png";
           result.forthVolumeInfo = "(가로x세로x높이) ➗ 5000";
           result.forthVolumeValue = secondVolumeWeight;
           result.forthWeight = realWeight.sf;
         } else if (rateList[i] === dhlRate) {
-          result.forthImage = "/src/dhllogo.png";
+          result.forthImage = "/dhllogo.png";
           result.forthVolumeInfo = "(가로x세로x높이) ➗ 5000";
           result.forthVolumeValue = secondVolumeWeight;
           result.forthWeight = realWeight.dhl;
