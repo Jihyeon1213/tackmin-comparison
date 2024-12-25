@@ -58,7 +58,7 @@ function ServiceComparison() {
       const requests = [
         axios.get("/src/emsrate.json"),
         axios.post(
-          "http://127.0.0.1:5002/scrape_ups",
+          "https://tackmin-comparison-1.onrender.com/scrape_ups",
           {
             countryCode: selectedCountry,
             weight: weight,
@@ -73,7 +73,7 @@ function ServiceComparison() {
       if (dhlSfSupportedCountries[selectedCountry]) {
         requests.push(
           axios.post(
-            "http://127.0.0.1:5000/scrape",
+            "https://scrape-plei.onrender.com/scrape",
             {
               countryCode: selectedCountry,
               weight: realWeight.dhl,
@@ -81,7 +81,7 @@ function ServiceComparison() {
             { withCredentials: false }
           ),
           axios.post(
-            "http://127.0.0.1:5000/scrape",
+            "https://scrape-plei.onrender.com/scrape",
             {
               countryCode: selectedCountry,
               weight: realWeight.sf,
