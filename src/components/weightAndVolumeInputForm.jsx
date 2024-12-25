@@ -23,7 +23,7 @@ function WeightAndVolumeInputForm() {
 
   return (
     <>
-      <div className="relative text-gray-800 w-96 h-[80vh] sm:w-[28rem] md:w-[36rem] lg:w-[42rem] p-8 rounded-lg shadow-2xl flex flex-col items-center justify-center">
+      <div className="relative text-gray-800 w-96 h-[90vh] sm:w-[28rem] md:w-[36rem] lg:w-[42rem] p-8 rounded-lg shadow-2xl flex flex-col items-center justify-center">
         <button
           onClick={handlegoCountryInputClick}
           className="absolute top-2 left-2 bg-gray-800 text-white text-sm p-1 rounded hover:bg-blue-600 flex items-center"

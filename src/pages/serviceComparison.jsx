@@ -303,7 +303,7 @@ function ServiceComparison() {
 
   if (isLoading) {
     return (
-      <div className="relative text-gray-800 w-96 h-[80vh] sm:w-[28rem] md:w-[36rem] lg:w-[42rem] p-8 rounded-lg shadow-2xl flex flex-col items-center justify-center">
+      <div className="relative text-gray-800 w-96 h-[90vh] sm:w-[28rem] md:w-[36rem] lg:w-[42rem] p-8 rounded-lg shadow-2xl flex flex-col items-center justify-center">
         <div className="loader mb-4"></div>
         <p className="text-xl font-semibold">로딩 중입니다...</p>
       </div>
