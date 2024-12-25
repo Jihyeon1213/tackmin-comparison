@@ -56,7 +56,7 @@ function ServiceComparison() {
       setIsLoading(true);
 
       const requests = [
-        axios.get("/src/emsrate.json"),
+        axios.get("/emsrate.json"),
         axios.post(
           "https://tackmin-comparison-1.onrender.com/scrape_ups",
           {
