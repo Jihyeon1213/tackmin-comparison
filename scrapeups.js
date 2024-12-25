@@ -4,7 +4,9 @@ import cors from "cors";
 import bodyParser from "body-parser";
 
 const app = express();
-app.use(cors());
+app.use(cors({
+  origin: "https://minjock-of-taeckbae.vercel.app",
+}));
 
 const port = 5002;
 
