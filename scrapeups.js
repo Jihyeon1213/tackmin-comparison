@@ -27,35 +27,25 @@ app.post("/scrape_ups", jsonParser, async function scrapeUps(req, res) {
 
     await page.goto("https://ems.epost.go.kr/front.EmsDeliveryDelivery01.postal#", { waitUntil: 'networkidle' });
 
-    await page.waitForSelector(".btnChange", { timeout: 10000 });
     await page.click(".btnChange");
-    await page.waitForTimeout(1000);
 
     await page.waitForSelector("#nation", { timeout: 10000 });
     await page.selectOption("#nation", countryCode);
-    await page.waitForTimeout(1000);
 
-    await page.waitForSelector('[title="실중량"]', { timeout: 10000 });
     await page.getByTitle("실중량").fill(weight);
-    await page.waitForTimeout(1000);
 
-    await page.waitForSelector('[title="가로"]', { timeout: 10000 });
     await page.getByTitle("가로").fill(width);
-    await page.waitForSelector('[title="세로"]', { timeout: 10000 });
+
     await page.getByTitle("세로").fill(length);
-    await page.waitForSelector('[title="높이"]', { timeout: 10000 });
+
     await page.getByTitle("높이").fill(height);
-    await page.waitForTimeout(1000);
 
-    await page.waitForSelector("#cal_wgt", { timeout: 10000 });
     await page.click("#cal_wgt");
-    await page.waitForTimeout(3000);
+    await page.waitForTimeout(2000);
 
-    await page.waitForSelector('text="조회하기"', { timeout: 10000 });
     await page.getByText("조회하기").click();
-    await page.waitForTimeout(1000);
 
-    await page.waitForSelector("#spanPrc", { timeout: 30000 });
+    await page.waitForSelector("#spanPrc", { timeout: 2000 });
 
     const rate = await page.$eval("#spanPrc", el => el.textContent);
     res.send(rate);
