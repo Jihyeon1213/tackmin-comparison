@@ -16,7 +16,7 @@ export const useInputFormStore = create((set) => ({
   firstVolumeWeight: 0,
   secondVolumeWeight: 0,
   handlegoCountryInputClick: () => set({ landingPage: false, isNextCountry: true }),
-  handleGoLandingPageClick: () => set({ landingPage: true, isNextWeightAndVolume: false, isNextCountry: false, weight: "" }),
+  handleGoLandingPageClick: () => set({ landingPage: true, isNextWeightAndVolume: false, isNextCountry: false, weight: "", width: "", length: "", height: "" }),
   handleGoWeightInputClick: () => set({ isComparison: false, isNextWeightAndVolume: true, landingPage: false, isNextCountry: false }),
   handleWeightInputChange: (e) => {
     set({ weight: e.target.value })
