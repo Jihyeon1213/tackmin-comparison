@@ -4,10 +4,15 @@ import useInputFormStore from "../store";
 
 function ServiceComparison() {
   const [emsRate, setEmsRate] = useState(0);
-  const [UpsRate, setUpsRate] = useState(0);
-  const [SfRate, setSfRate] = useState(0);
+  const [upsRate, setUpsRate] = useState(0);
+  const [sfRate, setSfRate] = useState(0);
   const [dhlRate, setDhlRate] = useState(0);
-  const [realWeight, setRealWeight] = useState("");
+  const [realWeight, setRealWeight] = useState({
+    ems: 0,
+    sf: 0,
+    dhl: 0,
+    ups: 0,
+  });
   const [isLoading, setIsLoading] = useState(true);
   const [isInfoVisible, setIsInfoVisible] = useState(false);
   const {
@@ -143,17 +148,18 @@ function ServiceComparison() {
       },
     };
 
-    if (rate === emsRate) return carrierInfo.ems;
-    if (rate === UpsRate) return carrierInfo.ups;
-    if (rate === SfRate) return carrierInfo.sf;
-    if (rate === dhlRate) return carrierInfo.dhl;
+    if (rate === Number(emsRate)) return carrierInfo.ems;
+    if (rate === Number(upsRate)) return carrierInfo.ups;
+    if (rate === Number(sfRate)) return carrierInfo.sf;
+    if (rate === Number(dhlRate)) return carrierInfo.dhl;
+    return null;
   }
 
   function createCardArray() {
     const rates = [
-      Number(UpsRate),
+      Number(upsRate),
       Number(emsRate),
-      Number(SfRate),
+      Number(sfRate),
       Number(dhlRate),
     ];
     const sortedRates = rates.slice().sort((a, b) => a - b);
