@@ -133,7 +133,8 @@ app.post("/scrape", jsonParser, async function scrapeDhlSf(req, res) {
     const fixedWeight = weight.toFixed(1);
 
     browser = await chromium.launch({
-      headless: true
+      headless: true,
+      args: ['--no-sandbox']
     });
 
     const context = await browser.newContext();
@@ -161,7 +162,7 @@ app.post("/scrape", jsonParser, async function scrapeDhlSf(req, res) {
       await page.selectOption("#selectGubun", "비서류");
       await page.selectOption("#selectWeight", fixedWeight);
 
-      await page.waitForTimeout(200);
+      await page.waitForTimeout(1000);
 
       await page.waitForSelector("#spanPrice");
       rates[carrier] = await page.$eval("#spanPrice", (el) => el.textContent);
