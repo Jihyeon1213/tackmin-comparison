@@ -93,33 +93,21 @@ function ServiceComparison() {
 
       Promise.all(requests)
         .then((responses) => {
-          try {
-            if (!responses[0].data) throw new Error("EMS 데이터 없음");
-            if (!responses[1].data) throw new Error("UPS 데이터 없음");
+          setEmsRate(
+            responses[0].data[realWeight.ems][selectedCountry].toLocaleString()
+          );
+          setUpsRate(responses[1].data.slice(0, 7));
 
-            setEmsRate(
-              responses[0].data[realWeight.ems][
-                selectedCountry
-              ].toLocaleString()
-            );
-            setUpsRate(responses[1].data.slice(0, 7));
-
-            if (dhlSfSupportedCountries[selectedCountry]) {
-              if (!responses[2].data) throw new Error("DHL 데이터 없음");
-              if (!responses[3].data) throw new Error("SF 데이터 없음");
-
-              setDhlRate(responses[2].data["DHL"]);
-              setSfRate(responses[3].data["SF"]);
-            } else {
-              setDhlRate(null);
-              setSfRate(null);
-            }
-          } catch (error) {
-            console.error("데이터 처리 중 오류:", error);
+          if (dhlSfSupportedCountries[selectedCountry]) {
+            setDhlRate(responses[2].data["DHL"]);
+            setSfRate(responses[3].data["SF"]);
+          } else {
+            setDhlRate(null);
+            setSfRate(null);
           }
         })
         .catch((error) => {
-          console.error("API 요청 중 오류:", error);
+          console.error(error);
         })
         .finally(() => {
           setIsLoading(false);
@@ -127,175 +115,68 @@ function ServiceComparison() {
     }
   }, [realWeight, selectedCountry]);
 
-  function Checkcheeprate() {
-    let rateList = [UpsRate, emsRate, SfRate, dhlRate];
-
-    rateList.sort(function (a, b) {
-      return a - b;
-    });
-    return rateList;
-  }
-
-  function match() {
-    let rateList = [UpsRate, emsRate, SfRate, dhlRate];
-    const result = {
-      firstImage: "",
-      secondImage: "",
-      thirdImage: "",
-      forthImage: "",
-      firstVolumeInfo: "",
-      secondVolumeInfo: "",
-      thirdVolumeInfo: "",
-      forthVolumeInfo: "",
-      firstVolumeValue: "",
-      secondVolumeValue: "",
-      thirdVolumeValue: "",
-      forthVolumeValue: "",
-      firstWeight: "",
-      secondWeight: "",
-      thirdWeight: "",
-      forthWeight: "",
+  function getCarrierInfo(rate, realWeight, volumeWeight) {
+    const carrierInfo = {
+      ems: {
+        image: "/emslogo.png",
+        volumeInfo: "(가로x세로x높이) ➗ 6000",
+        weight: realWeight.ems,
+        volumeValue: volumeWeight.first,
+      },
+      ups: {
+        image: "/upslogo.png",
+        volumeInfo: "(가로x세로x높이) ➗ 6000",
+        weight: realWeight.ups,
+        volumeValue: volumeWeight.first,
+      },
+      sf: {
+        image: "/sflogo.png",
+        volumeInfo: "(가로x세로x높이) ➗ 5000",
+        weight: realWeight.sf,
+        volumeValue: volumeWeight.second,
+      },
+      dhl: {
+        image: "/dhllogo.png",
+        volumeInfo: "(가로x세로x높이) ➗ 5000",
+        weight: realWeight.dhl,
+        volumeValue: volumeWeight.second,
+      },
     };
 
-    for (let i = 0; i < rateList.length; i++) {
-      if (Checkcheeprate()[0] === rateList[i]) {
-        if (rateList[i] === emsRate) {
-          result.firstImage = "/emslogo.png";
-          result.firstVolumeInfo = "(가로x세로x높이) ➗ 6000";
-          result.firstVolumeValue = firstVolumeWeight;
-          result.firstWeight = realWeight.ems;
-        } else if (rateList[i] === UpsRate) {
-          result.firstImage = "/upslogo.png";
-          result.firstVolumeInfo = "(가로x세로x높이) ➗ 6000";
-          result.firstVolumeValue = firstVolumeWeight;
-          result.firstWeight = realWeight.ups;
-        } else if (rateList[i] === SfRate) {
-          result.firstImage = "/sflogo.png";
-          result.firstVolumeInfo = "(가로x세로x높이) ➗ 5000";
-          result.firstWeight = realWeight.sf;
-          result.firstVolumeValue = secondVolumeWeight;
-        } else if (rateList[i] === dhlRate) {
-          result.firstImage = "/dhllogo.png";
-          result.firstVolumeInfo = "(가로x세로x높이) ➗ 5000";
-          result.firstVolumeValue = secondVolumeWeight;
-          result.firstWeight = realWeight.dhl;
-        }
-      }
-      if (Checkcheeprate()[1] === rateList[i]) {
-        if (rateList[i] === emsRate) {
-          result.secondImage = "/emslogo.png";
-          result.secondVolumeInfo = "(가로x세로x높이) ➗ 6000";
-          result.secondVolumeValue = firstVolumeWeight;
-          result.secondWeight = realWeight.ems;
-        } else if (rateList[i] === UpsRate) {
-          result.secondImage = "/upslogo.png";
-          result.secondVolumeInfo = "(가로x세로x높이) ➗ 6000";
-          result.secondVolumeValue = firstVolumeWeight;
-          result.secondWeight = realWeight.ups;
-        } else if (rateList[i] === SfRate) {
-          result.secondImage = "/sflogo.png";
-          result.secondVolumeInfo = "(가로x세로x높이) ➗ 5000";
-          result.secondVolumeValue = secondVolumeWeight;
-          result.secondWeight = realWeight.sf;
-        } else if (rateList[i] === dhlRate) {
-          result.secondImage = "/dhllogo.png";
-          result.secondVolumeInfo = "(가로x세로x높이) ➗ 5000";
-          result.secondVolumeValue = secondVolumeWeight;
-          result.secondWeight = realWeight.dhl;
-        }
-      }
-      if (Checkcheeprate()[2] === rateList[i]) {
-        if (rateList[i] === emsRate) {
-          result.thirdImage = "/emslogo.png";
-          result.thirdVolumeInfo = "(가로x세로x높이) ➗ 6000";
-          result.thirdVolumeValue = firstVolumeWeight;
-          result.thirdWeight = realWeight.ems;
-        } else if (rateList[i] === UpsRate) {
-          result.thirdImage = "/upslogo.png";
-          result.thirdVolumeInfo = "(가로x세로x높이) ➗ 6000";
-          result.thirdVolumeValue = firstVolumeWeight;
-          result.thirdWeight = realWeight.ups;
-        } else if (rateList[i] === SfRate) {
-          result.thirdImage = "/sflogo.png";
-          result.thirdVolumeInfo = "(가로x세로x높이) ➗ 5000";
-          result.thirdVolumeValue = secondVolumeWeight;
-          result.thirdWeight = realWeight.sf;
-        } else if (rateList[i] === dhlRate) {
-          result.thirdImage = "/dhllogo.png";
-          result.thirdVolumeInfo = "(가로x세로x높이) ➗ 5000";
-          result.thirdVolumeValue = secondVolumeWeight;
-          result.thirdWeight = realWeight.dhl;
-        }
-      }
-      if (Checkcheeprate()[3] === rateList[i]) {
-        if (rateList[i] === emsRate) {
-          result.forthImage = "/emslogo.png";
-          result.forthVolumeInfo = "(가로x세로x높이) ➗ 6000";
-          result.forthVolumeValue = firstVolumeWeight;
-          result.forthWeight = realWeight.ems;
-        } else if (rateList[i] === UpsRate) {
-          result.forthImage = "/upslogo.png";
-          result.forthVolumeValue = "(가로x세로x높이) ➗ 6000";
-          result.forthVolumeValue = firstVolumeWeight;
-          result.forthWeight = realWeight.ups;
-        } else if (rateList[i] === SfRate) {
-          result.forthImage = "/sflogo.png";
-          result.forthVolumeInfo = "(가로x세로x높이) ➗ 5000";
-          result.forthVolumeValue = secondVolumeWeight;
-          result.forthWeight = realWeight.sf;
-        } else if (rateList[i] === dhlRate) {
-          result.forthImage = "/dhllogo.png";
-          result.forthVolumeInfo = "(가로x세로x높이) ➗ 5000";
-          result.forthVolumeValue = secondVolumeWeight;
-          result.forthWeight = realWeight.dhl;
-        }
-      }
-    }
-    return result;
+    if (rate === emsRate) return carrierInfo.ems;
+    if (rate === UpsRate) return carrierInfo.ups;
+    if (rate === SfRate) return carrierInfo.sf;
+    if (rate === dhlRate) return carrierInfo.dhl;
   }
 
-  const cardArray = [
-    {
-      country: selectedCountry,
-      rate: Checkcheeprate()[0],
-      weight: match().firstWeight,
-      image: match().firstImage,
-      volumeInfo: match().firstVolumeInfo,
-      volumeValue: match().firstVolumeValue,
-    },
-    {
-      country: selectedCountry,
-      rate: Checkcheeprate()[1],
-      weight: match().secondWeight,
-      image: match().secondImage,
-      volumeInfo: match().secondVolumeInfo,
-      volumeValue: match().secondVolumeValue,
-    },
-    {
-      country: selectedCountry,
-      rate: Checkcheeprate()[2],
-      weight: match().thirdWeight,
-      image: match().thirdImage,
-      volumeInfo: match().thirdVolumeInfo,
-      volumeValue: match().thirdVolumeValue,
-    },
-    {
-      country: selectedCountry,
-      rate: Checkcheeprate()[3],
-      weight: match().forthWeight,
-      image: match().forthImage,
-      volumeInfo: match().forthVolumeInfo,
-      volumeValue: match().forthVolumeValue,
-    },
-  ].filter((card) => {
-    if (
-      (card.image.includes("dhl") || card.image.includes("sf")) &&
-      (card.rate === "" || card.rate === null || card.rate === undefined)
-    ) {
-      return false;
-    }
-    return true;
-  });
+  function createCardArray() {
+    const rates = [
+      Number(UpsRate),
+      Number(emsRate),
+      Number(SfRate),
+      Number(dhlRate),
+    ];
+    const sortedRates = rates.slice().sort((a, b) => a - b);
+
+    return sortedRates
+      .map((rate) => {
+        const info = getCarrierInfo(rate, realWeight, {
+          first: firstVolumeWeight,
+          second: secondVolumeWeight,
+        });
+        return {
+          country: selectedCountry,
+          rate,
+          weight: info.weight,
+          image: info.image,
+          volumeInfo: info.volumeInfo,
+          volumeValue: info.volumeValue,
+        };
+      })
+      .filter((card) => card.rate !== 0 && card.rate !== "0");
+  }
+
+  const cardArray = createCardArray();
 
   const toggleInfoVisibility = () => {
     setIsInfoVisible(!isInfoVisible);
