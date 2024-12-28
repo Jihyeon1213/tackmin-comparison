@@ -27,22 +27,6 @@ function ServiceComparison() {
     handleGoWeightInputClick,
   } = useInputFormStore();
 
-  const dhlSfSupportedCountries = {
-    US: true,
-    JP: true,
-    CN: true,
-    HK: true,
-    TW: true,
-    VN: true,
-    TH: true,
-    SG: true,
-    MY: true,
-    ID: true,
-    PH: true,
-    IN: true,
-    AU: true,
-  };
-
   useEffect(() => {
     let emsWeight = Math.max(weight, firstVolumeWeight);
     let sfWeight = Math.max(weight, secondVolumeWeight);
@@ -56,6 +40,7 @@ function ServiceComparison() {
       ups: upsWeight,
     });
   }, [weight, firstVolumeWeight, secondVolumeWeight]);
+
   useEffect(() => {
     if (realWeight && selectedCountry) {
       setIsLoading(true);
@@ -73,28 +58,23 @@ function ServiceComparison() {
           },
           { withCredentials: false }
         ),
+        axios.post(
+          "https://scrape-plei.onrender.com/scrape",
+          {
+            countryCode: selectedCountry,
+            weight: realWeight.dhl,
+          },
+          { withCredentials: false }
+        ),
+        axios.post(
+          "https://scrape-plei.onrender.com/scrape",
+          {
+            countryCode: selectedCountry,
+            weight: realWeight.sf,
+          },
+          { withCredentials: false }
+        ),
       ];
-
-      if (dhlSfSupportedCountries[selectedCountry]) {
-        requests.push(
-          axios.post(
-            "https://scrape-plei.onrender.com/scrape",
-            {
-              countryCode: selectedCountry,
-              weight: realWeight.dhl,
-            },
-            { withCredentials: false }
-          ),
-          axios.post(
-            "https://scrape-plei.onrender.com/scrape",
-            {
-              countryCode: selectedCountry,
-              weight: realWeight.sf,
-            },
-            { withCredentials: false }
-          )
-        );
-      }
 
       Promise.all(requests)
         .then((responses) => {
@@ -102,14 +82,8 @@ function ServiceComparison() {
             responses[0].data[realWeight.ems][selectedCountry].toLocaleString()
           );
           setUpsRate(responses[1].data.slice(0, 7));
-
-          if (dhlSfSupportedCountries[selectedCountry]) {
-            setDhlRate(responses[2].data["DHL"]);
-            setSfRate(responses[3].data["SF"]);
-          } else {
-            setDhlRate(null);
-            setSfRate(null);
-          }
+          setDhlRate(responses[2].data["DHL"]);
+          setSfRate(responses[3].data["SF"]);
         })
         .catch((error) => {
           console.error(error);
