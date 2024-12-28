@@ -16,25 +16,27 @@
 
 <details>
   <summary>국내에는 국제 택배 가격을 비교해주는 사이트가 없을까?</summary>
-
+<br>
+<p>
     우체국에 근무했을 때 ems뿐 아니라 다른 택배사 가격도 알고 싶어하는 수요가 있음을 알게되었습니다. 외국에서는 대표적으로 parcelmonkey
     사이트에서 국가와 무게를 입력하면 택배사와 가격을 쿠팡처럼 찾아주는데, 국내에는 없을까? 만약 국내에서 국제 택배 가격비교 웹 서비스를 만든다면 국제 택배를 이용하는 유학생 자녀를 둔 부모, 해외에 거주하는 친구에게 보내는 국내 사용자들이 편하게 국제 택배에 대한 정보를 얻을 수 있지 않을까 싶습니다.
-
+</p>
 </details>
 <br>
 <br>
 <details>
 <summary>무게뿐 아니라 부피도 고려한 가격도 필요하지 않을까?</summary>
-    
+<br>
+<p>
     택배 물품이 과자의 경우 부피는 크지만 무게는 가볍습니다. 사용자들이 무게 기반으로 가격 정보로 오인해 포장까지 한 후 접수하러 간다면 막상 알고있던 택배 가격과 다름을 경험할 수 있습니다. 이 프로젝트는 이러한 불상사가 발생하지 않도록 부피 중량에 대한 정보도 알려줍니다.
-
+</p>
 </details>
 <br>
 <br>
 <details>
 <summary>서비스를 제공하는 택배사는?</summary>
 <br>
-<br>
+<p>
 
 - **EMS (Express Mail Service)**
 
@@ -51,6 +53,7 @@
 - **SF Express**
   - 중국 기반의 국제 물류 회사로, 아시아 지역을 중심으로 합리적인 비용과 빠른 배송 서비스를 제공합니다.
 
+</p>
 </details>
 <br>
 <br>
@@ -270,7 +273,8 @@ const jsonParser = bodyParser.json();
 app.post("/scrape_ups", jsonParser, async function scrapeUps(req, res) {});
 ```
 
-Playwright를 사용하여 웹페이지를 자동으로 열고 사용자가 요청한 정보를 기반으로 페이지 상호작용을 수행했습니다. 이 과정에서 크롤링하는 사이트에 따라 코드를 다르게 짜야하므로 사이트의 개발자도구 Element를 탐색하였습니다. 주의했던 점은 요금 조회 경우 크롤링하는 사이트에서의 로드 시간을 고려하며 코드를 짜는 것입니다. 충분한 대기 시간을 넣어 빈 값을 가져오지 않도록 하였습니다.
+Playwright를 사용하여 웹페이지를 자동으로 열고 사용자가 요청한 정보를 기반으로 페이지 상호 작용을 수행했습니다. 이 과정에서 크롤링하는 사이트에 따라 코드를 다르게 짜야하므로 사이트의 개발자도구 Element를 탐색하였습니다. 코드를 짠 후 실행해보았는데 처음에는 요금을 가져오지 않았습니다.
+headless:false로 브라우저를 띄운 채로 어떻게 자동화하여 선택하는지 살펴보았습니다. 요금 조회 후 결괏값을 기다리지않고 선택자에서 빈 값을 가져오는 것을 발견했습니다. 요금 조회 경우 크롤링하는 사이트에서의 로드 시간을 고려하며 코드를 짜야했습니다. waitForSelector 함수를 이용해 충분한 대기 시간을 넣어 빈 값을 가져오지 않도록 하였습니다.
 
 ```javascript
 await page.waitForSelector('text="조회하기"', { timeout: 10000 });
@@ -335,7 +339,8 @@ function Checkcheeprate() {
 }
 ```
 
-정렬된 요금 순서에 따라 각 택배사의 로고, 부피 계산 방식, 무게 등의 데이터를 매칭하도록 하는 함수 match를 만들었습니다. 정렬된 가격에 따른 결과를 result 객체에 저장하여 반환하도록 하였습니다.
+정렬된 요금 순서에 따라 각 택배사의 로고, 부피 계산 방식, 무게 등의 데이터를 매칭하도록 하는 함수 match를 만들었습니다.
+코드의 내용은 택배사 리스트를 돌면서 첫번째 순서인지, 두번째 순서인지 등을 확인하는 조건부를 일일히 걸었습니다. 그후 result객체(첫 번째~ 네 번째 각 정보들)에 넣어 반환하는 함수를 만들었습니다.
 
 ```javascript
 function match() {
@@ -457,7 +462,7 @@ function match() {
 }
 ```
 
-정렬된 요금 순서에 맞는 택배사 정보를 하나의 객체로 묶어 배열로 생성하여 map을 통해 카드를 생성하기 수월하게 만들었습니다.
+정렬된 요금 순서에 맞는 택배사 정보를 하나의 객체로 묶어 배열로 생성하여 추후 return 부분에서 map을 통해 카드를 생성하도록 하였습니다. 코드를 짜면서 이렇게가 최선인가? 이렇게 길게 짜야하나? 라는 생각이 들었습니다.
 
 ```javascript
 const cardArray = [
@@ -496,9 +501,73 @@ volumeValue: match().forthVolumeValue,
 
 ```
 
-코드를 짜고 나서 문제가 있음을 발견했습니다. 5번째 택배사를 추가해야 하는 경우, 새로운 택배사의 이미지, 부피 계산법, 무게 정보를 객체에 추가해야만 합니다. 이러한 방식은 확장성이 낮고 택배사 추가가 반복될수록 코드가 길어지고 유지보수가 어려워짐을 느꼈습니다.
+그리고 코드를 짜고 나서 문제가 있음을 발견했습니다. 5번째 택배사를 추가해야 하는 경우, 새로운 택배사의 이미지, 부피 계산법, 무게 정보를 객체에 추가해야만 합니다. 이러한 방식은 확장성이 낮고 택배사 추가가 반복될수록 코드가 길어지고 유지 보수가 어려워짐을 느꼈습니다. 원하는 카드 섹션을 만들었지만 리펙토링을 생각한 코드가 아니었습니다.
 
-이를 해결하기 위해 택배사 정보를 미리 매핑한 후 요금에 따라 정렬 및 데이터를 생성하는 방식을 적용하도록 하는 것이 좋을 것 같습니다.
+이를 해결하기 위해 각 택배사 카드 섹션에 들어갈 정보를 미리 객체로 만들어 놓고 rate에 일치한 카드 정보 값을 반환하는 함수 getCarrierInfo를 만들었습니다. 새로운 택배사를 추가할 때 carrierInfo 객체에만 정보를 추가하면 되도록 하였습니다. 카드배열을 만드는 방법도 일일히 하드 코딩하며 작성하는 것이 아닌, map 메서드를 이용했습니다.
+가격순 저장한 요금 리스트를 map 메서드를 통해 가격순으로 돌면서 위 함수getCarrierInfo를 호출하였고 카드 배열에 들어갈 정보 객체를 생성하도록 하였습니다.
+
+```javascript
+function getCarrierInfo(rate, realWeight, volumeWeight) {
+  const carrierInfo = {
+    ems: {
+      image: "/emslogo.png",
+      volumeInfo: "(가로x세로x높이) ➗ 6000",
+      weight: realWeight.ems,
+      volumeValue: volumeWeight.first,
+    },
+    ups: {
+      image: "/upslogo.png",
+      volumeInfo: "(가로x세로x높이) ➗ 6000",
+      weight: realWeight.ups,
+      volumeValue: volumeWeight.first,
+    },
+    sf: {
+      image: "/sflogo.png",
+      volumeInfo: "(가로x세로x높이) ➗ 5000",
+      weight: realWeight.sf,
+      volumeValue: volumeWeight.second,
+    },
+    dhl: {
+      image: "/dhllogo.png",
+      volumeInfo: "(가로x세로x높이) ➗ 5000",
+      weight: realWeight.dhl,
+      volumeValue: volumeWeight.second,
+    },
+  };
+
+  if (rate === emsRate) return carrierInfo.ems;
+  if (rate === UpsRate) return carrierInfo.ups;
+  if (rate === SfRate) return carrierInfo.sf;
+  if (rate === dhlRate) return carrierInfo.dhl;
+}
+
+function createCardArray() {
+  const rates = [
+    Number(UpsRate),
+    Number(emsRate),
+    Number(SfRate),
+    Number(dhlRate),
+  ];
+  const sortedRates = rates.slice().sort((a, b) => a - b);
+
+  return sortedRates
+    .map((rate) => {
+      const info = getCarrierInfo(rate, realWeight, {
+        first: firstVolumeWeight,
+        second: secondVolumeWeight,
+      });
+      return {
+        country: selectedCountry,
+        rate,
+        weight: info.weight,
+        image: info.image,
+        volumeInfo: info.volumeInfo,
+        volumeValue: info.volumeValue,
+      };
+    })
+    .filter((card) => card.rate !== 0 && card.rate !== "0");
+}
+```
 
 <h3>5. 크롤링 속도</h3>
 처음에는 아래 코드와 같이 api 요청을 따로 따로 보내는 방식으로 요금 정보를 가져왔습니다.
@@ -520,7 +589,10 @@ axios
   });
 ```
 
-크롤링 작업이 느렸습니다. 그래서 여러 비동기 작업을 동시에 처리하도록 promise.all을 사용하여 최적화하였습니다.
+위 방식대로 하다보니 크롤링 작업이 약 30초가량 걸렸습니다.  
+이유를 생각해보니 API 요청을 따로 따로 보내는 방식에서는 요청이 순차적으로 처리되어 전체 실행 시간이 길어졌던 것이었습니다.  
+개선 방법으로 promise.all을 사용하였습니다. promise.all을 사용하니 여러 비동기 요청을 동시에 실행할 수 있었습니다. 모든 요청이 병렬로 실행되므로 전체 작업 시간이 단축 되었습니다.  
+또한, 여러 요청을 하나의 promise.all로 묶어 처리하니 코드가 간결해져 가독성면에서도 보완이 가능했습니다.
 
 ```javascript
 Promise.all(requests)
@@ -546,8 +618,10 @@ Promise.all(requests)
   });
 ```
 
-로컬에서는 5-10초 정도 걸리는 것을 확인했습니다. 로컬에서도 적지 않은 시간이었지만 배포 후 크롤링의 속도가 너무 느려져 로딩 시간이 30초 이상 걸렸습니다. 택배 가격 조회를 위해 이렇게 오랜 시간이 걸리면 사용자가 큰 불편함을 느낄것이라 생각이 들었습니다.
-무료와 빠른 배포를 위해 Render 서버를 사용하였지만, Render환경이 로컬 환경보다 성능이 낮은 CPU/메모리를 제공하기 때문에 느려질 수 있다는 것을 알게되었습니다.
+로컬에서는 5-10초 정도 걸리는 것을 확인했습니다. 로컬에서도 적지 않은 시간이었지만 배포 후 크롤링의 속도가 너무 느려져 로딩 시간이 30초 이상 걸렸습니다. 택배 가격 조회를 위해 이렇게 오랜 시간이 걸리면 사용자가 큰 불편함을 느낄 것이라 생각이 들었습니다.
+
+무료와 빠른 배포를 위해 Render 서버를 사용하였지만, Render 환경이 로컬 환경보다 성능이 낮은 CPU/메모리를 제공하기 때문에 느려질 수 있다는 것을 알게되었습니다.
+
 다른 백엔드 서버를 고려하거나 크롤링 속도를 빠르게 하는 방법을 찾아야할 것 같습니다.
 
 <br>
