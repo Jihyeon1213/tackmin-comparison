@@ -152,8 +152,6 @@ app.post("/scrape", jsonParser, async function scrapeDhlSf(req, res) {
         waitUntil: 'networkidle'
       });
 
-      await page.waitForTimeout(200);
-
       await page.waitForSelector("#selectType:not([disabled])");
       await page.waitForSelector("#selectNation:not([disabled])");
 
@@ -161,7 +159,7 @@ app.post("/scrape", jsonParser, async function scrapeDhlSf(req, res) {
       await page.selectOption("#selectNation", countryList[countryCode]);
       await page.selectOption("#selectGubun", "비서류");
 
-      await page.waitForSelector("#selectWeight:not([disabled])", { timeout: 2000 });
+      await page.waitForSelector(`#selectWeight option[value="${fixedWeight}"]`, { timeout: 60000 });
       await page.selectOption("#selectWeight", fixedWeight);
 
       await page.waitForSelector("#spanPrice");
