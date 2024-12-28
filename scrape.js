@@ -154,15 +154,15 @@ app.post("/scrape", jsonParser, async function scrapeDhlSf(req, res) {
 
       await page.waitForTimeout(200);
 
-      await page.waitForSelector('#selectType:not([disabled])');
-      await page.waitForSelector('#selectNation:not([disabled])');
+      await page.waitForSelector("#selectType:not([disabled])");
+      await page.waitForSelector("#selectNation:not([disabled])");
 
       await page.selectOption("#selectType", carrier);
       await page.selectOption("#selectNation", countryList[countryCode]);
       await page.selectOption("#selectGubun", "비서류");
-      await page.selectOption("#selectWeight", fixedWeight);
 
-      await page.waitForTimeout(1000);
+      await page.waitForSelector("#selectWeight:not([disabled])", { timeout: 2000 });
+      await page.selectOption("#selectWeight", fixedWeight);
 
       await page.waitForSelector("#spanPrice");
       rates[carrier] = await page.$eval("#spanPrice", (el) => el.textContent);
