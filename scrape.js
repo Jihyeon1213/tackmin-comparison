@@ -149,7 +149,8 @@ app.post("/scrape", jsonParser, async function scrapeDhlSf(req, res) {
       }
 
       await page.goto("https://www.cvsnet.co.kr/service/international-delivery/user/contentsid/170/index.do", {
-        waitUntil: 'networkidle'
+        waitUntil: "domcontentloaded",
+        timeout: 60000
       });
 
       await page.waitForSelector("#selectType:not([disabled])");
